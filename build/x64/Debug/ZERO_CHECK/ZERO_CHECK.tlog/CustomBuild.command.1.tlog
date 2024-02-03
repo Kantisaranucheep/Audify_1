@@ -1,0 +1,10 @@
+^D:\KANT_ISARANUCHEEP\KMITL\SOFTWARE ENGINEERING YEAR1\C++\PROJECT\AUDIFY_1\BUILD\CMAKEFILES\5C4558A11641026F82046F0199111A5A\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SD:/Kant_Isaranucheep/KMITL/software engineering year1/c++/project/Audify_1" "-BD:/Kant_Isaranucheep/KMITL/software engineering year1/c++/project/Audify_1/build" --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file "D:/Kant_Isaranucheep/KMITL/software engineering year1/c++/project/Audify_1/build/Audify_1.sln"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

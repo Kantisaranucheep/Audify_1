@@ -1,0 +1,4 @@
+D:/Kant_Isaranucheep/KMITL/software engineering year1/c++/project/Audify_1/build/CMakeFiles/Audify_1.dir
+D:/Kant_Isaranucheep/KMITL/software engineering year1/c++/project/Audify_1/build/CMakeFiles/INSTALL.dir
+D:/Kant_Isaranucheep/KMITL/software engineering year1/c++/project/Audify_1/build/CMakeFiles/ALL_BUILD.dir
+D:/Kant_Isaranucheep/KMITL/software engineering year1/c++/project/Audify_1/build/CMakeFiles/ZERO_CHECK.dir
