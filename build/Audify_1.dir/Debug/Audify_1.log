@@ -1,0 +1,8 @@
+﻿  Automatic MOC and UIC for target Audify_1
+  1>
+  Building Custom Rule D:/Kant_Isaranucheep/KMITL/software engineering year1/c++/project/Audify_1/CMakeLists.txt
+  mocs_compilation_Debug.cpp
+  main.cpp
+  mainwindow.cpp
+  Generating Code...
+  Audify_1.vcxproj -> D:\Kant_Isaranucheep\KMITL\software engineering year1\c++\project\Audify_1\build\Debug\Audify_1.exe
