@@ -14,13 +14,17 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QmainWindow{
-
-background-colorrgb(235, 255, 255);
-}
-</string>
+   <string notr="true">QMainWindow {
+    background-color: rgb(22, 22, 22);
+}</string>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string notr="true">QCentralWidget {
+    background-color: rgb(22, 22, 22);
+    color: rgb(255, 255, 255);  /* Set the text color if needed */
+}</string>
+   </property>
    <widget class="QFrame" name="frame">
     <property name="geometry">
      <rect>
@@ -32,7 +36,8 @@ background-colorrgb(235, 255, 255);
     </property>
     <property name="styleSheet">
      <string notr="true">QFrame{
-	background-color:rgb(39, 39, 39)
+	background-color:rgb(39, 39, 39);
+  border-radius: 10px;
 }</string>
     </property>
     <property name="frameShape">
@@ -57,15 +62,15 @@ background-colorrgb(235, 255, 255);
       <string notr="true">QSlider::groove:horizontal {
     height: 10px;
     width: 500px;
-    background: rgb(152, 152, 152)
+    background: rgb(152, 152, 152);
     border-radius: 5px;
 }
 
 QSlider::handle:horizontal {
-    background: rgb(76, 255, 243);
+    background: rgb(91, 102, 96);
     width: 10px;
     height: 10px;
-    margin: -7px - 7px;
+    margin: -7px -7px;
     border-radius: 10px;
 }
 </string>
@@ -77,23 +82,23 @@ QSlider::handle:horizontal {
     <widget class="QPushButton" name="push_play">
      <property name="geometry">
       <rect>
-       <x>500</x>
+       <x>520</x>
        <y>70</y>
-       <width>80</width>
-       <height>80</height>
+       <width>60</width>
+       <height>60</height>
       </rect>
      </property>
      <property name="styleSheet">
       <string notr="true">QPushButton{
 
 border: none;
-border-radius:40px;
+border-radius:30px;
 background-color:rgb(186, 186, 186);
 color:rgb(53, 255, 42);
-min-width: 80px;
-max-width: 80px;
-min-height: 80px;
-max-height: 80px;
+min-width: 60px;
+max-width: 60px;
+min-height: 60px;
+max-height: 60px;
 padding:0px;
 
 
@@ -106,23 +111,23 @@ padding:0px;
     <widget class="QPushButton" name="push_back">
      <property name="geometry">
       <rect>
-       <x>380</x>
+       <x>430</x>
        <y>70</y>
-       <width>80</width>
-       <height>80</height>
+       <width>60</width>
+       <height>60</height>
       </rect>
      </property>
      <property name="styleSheet">
       <string notr="true">QPushButton{
 
 border: none;
-border-radius:40px;
+border-radius:30px;
 background-color:rgb(186, 186, 186);
 color:rgb(53, 255, 42);
-min-width: 80px;
-max-width: 80px;
-min-height: 80px;
-max-height: 80px;
+min-width: 60px;
+max-width: 60px;
+min-height: 60px;
+max-height: 60px;
 padding:0px;
 
 
@@ -135,23 +140,23 @@ padding:0px;
     <widget class="QPushButton" name="push_skip">
      <property name="geometry">
       <rect>
-       <x>620</x>
+       <x>610</x>
        <y>70</y>
-       <width>80</width>
-       <height>80</height>
+       <width>60</width>
+       <height>60</height>
       </rect>
      </property>
      <property name="styleSheet">
       <string notr="true">QPushButton{
 
 border: none;
-border-radius:40px;
+border-radius:30px;
 background-color:rgb(186, 186, 186);
 color:rgb(53, 255, 42);
-min-width: 80px;
-max-width: 80px;
-min-height: 80px;
-max-height: 80px;
+min-width: 60px;
+max-width: 60px;
+min-height: 60px;
+max-height: 60px;
 padding:0px;
 
 
@@ -159,6 +164,186 @@ padding:0px;
      </property>
      <property name="text">
       <string/>
+     </property>
+    </widget>
+    <widget class="QSlider" name="horizontalSlider_2">
+     <property name="geometry">
+      <rect>
+       <x>930</x>
+       <y>0</y>
+       <width>131</width>
+       <height>201</height>
+      </rect>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QSlider::groove:horizontal {
+    height: 5px;
+    width: 500px;
+    background: rgb(152, 152, 152);
+    border-radius: 5px;
+}
+
+QSlider::handle:horizontal {
+    background: rgb(91, 102, 96);
+    width: 10px;
+    height: 10px;
+    margin: -7px - 7px;
+    border-radius: 10px;
+}
+</string>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="volume">
+     <property name="geometry">
+      <rect>
+       <x>860</x>
+       <y>70</y>
+       <width>60</width>
+       <height>60</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton{
+
+border: none;
+border-radius:30px;
+background-color:rgb(186, 186, 186);
+color:rgb(53, 255, 42);
+min-width: 60px;
+max-width: 60px;
+min-height: 60px;
+max-height: 60px;
+padding:0px;
+
+
+}</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="frame_2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>261</width>
+      <height>481</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QFrame{
+	background-color:rgb(39, 39, 39);
+  border-radius: 10px;
+}</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>0</y>
+       <width>131</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>20</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel{
+
+	color:rgb(255, 255, 255);
+}</string>
+     </property>
+     <property name="text">
+      <string>Playlist</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="frame_3">
+    <property name="geometry">
+     <rect>
+      <x>280</x>
+      <y>10</y>
+      <width>521</width>
+      <height>481</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QFrame{
+	background-color:rgb(39, 39, 39);
+  border-radius: 10px;
+}</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+   </widget>
+   <widget class="QFrame" name="frame_4">
+    <property name="geometry">
+     <rect>
+      <x>810</x>
+      <y>10</y>
+      <width>261</width>
+      <height>481</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QFrame{
+	background-color:rgb(39, 39, 39);
+  border-radius: 10px;
+}</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>0</y>
+       <width>131</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>20</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel{
+
+	color:rgb(255, 255, 255);
+}</string>
+     </property>
+     <property name="text">
+      <string>Song</string>
      </property>
     </widget>
    </widget>
@@ -172,6 +357,12 @@ padding:0px;
      <height>25</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuAudify_1">
+    <property name="title">
+     <string>Audify_1</string>
+    </property>
+   </widget>
+   <addaction name="menuAudify_1"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
