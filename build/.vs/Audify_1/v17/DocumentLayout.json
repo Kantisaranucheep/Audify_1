@@ -33,7 +33,7 @@
               "RelativeDocumentMoniker": "..\\mainwindow.cpp",
               "ToolTip": "D:\\Kant_Isaranucheep\\KMITL\\software engineering year1\\c\u002B\u002B\\project\\Audify_1\\mainwindow.cpp",
               "RelativeToolTip": "..\\mainwindow.cpp",
-              "ViewState": "AQIAAAwAAAAAAAAAAAAAACAAAAAAAAAA",
+              "ViewState": "AQIAABIAAAAAAAAAAAAAACAAAAAkAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-02-04T04:25:32.93Z",
               "EditorCaption": ""
@@ -48,8 +48,7 @@
               "RelativeToolTip": "..\\main.cpp",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-02-04T04:25:30.708Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-02-04T04:25:30.708Z"
             },
             {
               "$type": "Document",
@@ -61,8 +60,7 @@
               "RelativeToolTip": "..\\mainwindow.h",
               "ViewState": "AQIAAAYAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-02-04T04:25:08.732Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-02-04T04:25:08.732Z"
             },
             {
               "$type": "Document",
@@ -74,8 +72,7 @@
               "RelativeToolTip": "Audify_1_autogen\\include_Debug\\ui_mainwindow.h",
               "ViewState": "AQIAAIYAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-02-03T08:34:40.011Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-02-03T08:34:40.011Z"
             }
           ]
         }
