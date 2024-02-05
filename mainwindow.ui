@@ -60,17 +60,18 @@
      </property>
      <property name="styleSheet">
       <string notr="true">QSlider::groove:horizontal {
+	color: rgb(163, 163, 163);
     height: 10px;
     width: 500px;
-    background: rgb(152, 152, 152);
+    background: rgb(121, 121, 121);
     border-radius: 5px;
 }
 
 QSlider::handle:horizontal {
     background: rgb(91, 102, 96);
-    width: 10px;
-    height: 10px;
-    margin: -7px -7px;
+    width: 20px;
+    height: 20px;
+    margin-top: -7px-7px;  
     border-radius: 10px;
 }
 </string>
@@ -228,6 +229,12 @@ padding:0px;
       <string/>
      </property>
     </widget>
+    <zorder>push_play</zorder>
+    <zorder>push_back</zorder>
+    <zorder>push_skip</zorder>
+    <zorder>horizontalSlider_2</zorder>
+    <zorder>volume</zorder>
+    <zorder>horizontalSlider</zorder>
    </widget>
    <widget class="QFrame" name="frame_2">
     <property name="geometry">
