@@ -74,4 +74,4 @@ CMakeLists.txt.user*
 
 *.pdf
 *.exe
-build/.vs/Audify_1/v17/Preview/ipch/AutoPCH/*.ipch
+*.ipch
