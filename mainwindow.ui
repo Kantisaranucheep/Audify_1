@@ -174,8 +174,14 @@ QSlider::handle:horizontal {
      <property name="minimum">
       <number>0</number>
      </property>
+     <property name="maximum">
+      <number>100</number>
+     </property>
      <property name="value">
-      <number>5</number>
+      <number>0</number>
+     </property>
+     <property name="sliderPosition">
+      <number>0</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -612,7 +618,7 @@ border-radius: 20px;
       <rect>
        <x>30</x>
        <y>300</y>
-       <width>211</width>
+       <width>221</width>
        <height>71</height>
       </rect>
      </property>

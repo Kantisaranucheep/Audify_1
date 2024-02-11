@@ -6,6 +6,8 @@
 #include <QMediaPlayer>
 #include <QtWidgets>
 #include <QAudioOutput>
+#include <QFileDialog>
+#include <QFileInfo>
 
 
 QT_BEGIN_NAMESPACE
@@ -40,7 +42,12 @@ private slots:
 
     void on_horizontalSlider_2_valueChanged(int value);
 
-    void on_horizontalSlider_sliderMoved(int position);
+    void on_horizontalSlider_valueChanged(int value);
+
+    void handleMediaPlayerError();
+
+
+    void on_label_File_Name_linkActivated(const QString &link);
 
 private:
     Ui::MainWindow *ui;
@@ -49,7 +56,7 @@ private:
     QMediaPlayer *MPlayer;
     QAudioOutput *audioOutput;
 
-    qint64 duration;
+    qint64 mduration;
     void updateDuration(qint64 duration);
 
 };
