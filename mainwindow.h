@@ -8,6 +8,11 @@
 #include <QAudioOutput>
 #include <QFileDialog>
 #include <QFileInfo>
+#include <QPlainTextEdit>
+
+#include "inventory.h"  // Include the header file for Inventory
+#include "playlist.h"   // Include the header file for Playlist
+#include "song.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -46,8 +51,39 @@ private slots:
 
     void handleMediaPlayerError();
 
+    void updateSongList(const QString &playlistName);
 
-    void on_label_File_Name_linkActivated(const QString &link);
+
+
+    void on_push_repeat_clicked();
+
+    void on_pushaddplaylist_clicked();
+
+    void updatePlaylistLabels();
+
+    void onPlaylistLabelClicked(QLabel *clickedLabel);
+
+    // void playlistlabelcliked();
+
+
+    void on_pushdelplaylist_2_clicked();
+
+    void on_listWidget_itemClicked(QListWidgetItem *item);
+
+    // void on_pushaddplaylist_2_clicked();
+
+    void on_pushaddsong_clicked();
+
+    void on_pushdelsong_clicked();
+
+
+
+    void on_listWidget_itemDoubleClicked(QListWidgetItem *item);
+
+    void on_listWidget_song_itemClicked(QListWidgetItem *item);
+
+    void scrollFileName();
+
 
 private:
     Ui::MainWindow *ui;
@@ -55,9 +91,24 @@ private:
     bool isPause = false;
     QMediaPlayer *MPlayer;
     QAudioOutput *audioOutput;
+    Inventory* inventory;
 
     qint64 mduration;
     void updateDuration(qint64 duration);
+
+    QPlainTextEdit* playlistTextEdit;
+    QStringList playlist;
+    QVBoxLayout *playlistLayout;
+    QScrollArea* scrollArea;
+    int currentindex=0;
+    bool eventFilter(QObject *obj, QEvent *event);
+    QListWidgetItem* clickedItem;
+
+    QTimer *scrollTimer;
+    QString currentFileName;
+
+
+
 
 };
 #endif // MAINWINDOW_H

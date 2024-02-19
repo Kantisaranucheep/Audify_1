@@ -1,10 +1,16 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
+
+#include "song.h"
+#include "playlist.h"
+#include "inventory.h"
+
 #include <QStyle>
 #include <QLabel>
 #include <QVBoxLayout>
 #include <QFont>
 #include <QDebug>
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
@@ -15,7 +21,11 @@ MainWindow::MainWindow(QWidget *parent)
     MPlayer = new QMediaPlayer();
     audioOutput = new QAudioOutput();
 
+    // playlistTextEdit = ui->playlistTextEdit;
+    inventory = new Inventory();
+
     MPlayer->setAudioOutput(audioOutput);
+
 
     int iconSize = 40;
 
@@ -33,14 +43,32 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->horizontalSlider_2->setMinimum(0);
     ui->horizontalSlider_2->setMaximum(100);
-    ui->horizontalSlider_2->setValue(30);
+    // ui->horizontalSlider_2->setValue(5);
 
     connect(MPlayer, &QMediaPlayer::durationChanged, this, &MainWindow::durationChanged);
     connect(MPlayer, &QMediaPlayer::positionChanged, this, &MainWindow::positionChanged);
 
 
+
+    connect(ui->pushdelplaylist_2, &QPushButton::clicked, this, &MainWindow::on_pushdelplaylist_2_clicked);
+    connect(ui->listWidget, &QListWidget::itemClicked, this, &MainWindow::on_listWidget_itemClicked);
+    // connect(ui->pushaddsong, &QPushButton::clicked, this, &MainWindow::on_pushaddsong_clicked);
+
+    // disconnect(ui->listWidget, &QListWidget::itemClicked, 0, 0);
+
+    // // Connect the listWidget itemClicked signal to the on_listWidget_itemClicked slot
+    // connect(ui->listWidget, &QListWidget::itemClicked, this, &MainWindow::on_listWidget_itemClicked);
+
     ui->horizontalSlider->setRange(0, MPlayer->duration()/1000);
     audioOutput->setVolume(ui->horizontalSlider_2->value() / 100.0);
+
+    // Initialize the timer for scrolling the file name
+    scrollTimer = new QTimer(this);
+    connect(scrollTimer, &QTimer::timeout, this, &MainWindow::scrollFileName);
+
+    // Set the interval for scrolling (adjust as needed)
+    int scrollInterval = 160;  // milliseconds
+    scrollTimer->setInterval(scrollInterval);
 
 
 }
@@ -51,6 +79,7 @@ MainWindow::~MainWindow()
     delete ui;
     delete MPlayer;
     delete audioOutput;
+    delete inventory;
     // Optionally add more cleanup code here
 }
 
@@ -95,6 +124,12 @@ void MainWindow::on_actionOpen_Audio_File_triggered()
 
         // Optional: Start playing the media when a new file is loaded
     }
+
+    if (!inventory->getPlaylists().isEmpty()) {
+        Song newSong("filename");
+        inventory->getPlaylists().first().importSong(newSong);
+    }
+    qDebug() << "on_actionOpen_Audio_File_triggered called";
 }
 
 void MainWindow::on_push_play_clicked()
@@ -147,16 +182,6 @@ void MainWindow::on_horizontalSlider_2_valueChanged(int value)
     }    // Set volume between 0.0 and 1.0
 }
 
-void MainWindow::on_push_skip_clicked()
-{
-
-}
-
-void MainWindow::on_push_back_clicked()
-{
-
-}
-
 
 void MainWindow::on_horizontalSlider_valueChanged(int value)
 {
@@ -174,4 +199,349 @@ void MainWindow::handleMediaPlayerError() {
     qDebug() << "MediaPlayer Error: " << MPlayer->errorString();
 }
 
+
+
+void MainWindow::on_push_repeat_clicked()
+{
+    // Set the position of the MediaPlayer to the start
+    MPlayer->setPosition(0);
+
+    // Ensure that the MediaPlayer is playing if it was paused
+    if (isPause) {
+        QIcon pauseIcon = style()->standardIcon(QStyle::SP_MediaPause);
+        ui->push_play->setIcon(pauseIcon);
+        MPlayer->play();
+        isPause = false;
+    }
+
+}
+
+
+void MainWindow::on_pushaddplaylist_clicked()
+{
+    bool ok;
+    QString playlistName = QInputDialog::getText(this, tr("Add Playlist"),
+                                                 tr("Enter playlist name:"), QLineEdit::Normal,
+                                                 QString(), &ok);
+
+    if (ok && !playlistName.isEmpty()) {
+        // Create a new Playlist and add it to the Inventory
+        Playlist newPlaylist(playlistName);
+        inventory->addPlaylist(newPlaylist);
+
+        QLabel *playlistlabel = new QLabel(playlistName, this);
+        playlistlabel->setStyleSheet("QLabel { color : white; font-weight: bold; margin-left: 5px;"
+                                     "border-radius: 10px; }");  // Set the text color to blue for indication
+        playlistlabel->setCursor(Qt::PointingHandCursor);
+
+        // playlistlabel->installEventFilter(this);
+
+        // Add the playlist label to the QListWidget
+        QListWidgetItem *item = new QListWidgetItem(ui->listWidget);
+        item->setText(playlistName);
+        ui->listWidget->addItem(item);
+        // ui->listWidget->setItemWidget(item, playlistlabel);
+
+        updatePlaylistLabels();
+
+        qDebug() << "New Playlist Name: " << playlistName;
+    }
+}
+
+bool MainWindow::eventFilter(QObject *obj, QEvent *event)
+{
+    // if (obj->isWidgetType() && event->type() == QEvent::MouseButtonPress) {
+    //     // Check if the pressed widget is a QLabel
+    //     QLabel *pressedLabel = qobject_cast<QLabel*>(obj);
+    //     if (pressedLabel) {
+    //         // Handle the click event for the QLabel (playlist label)
+    //         onPlaylistLabelClicked(pressedLabel);
+    //         return true;  // Event handled
+    //     }
+    // }
+
+    // return QObject::eventFilter(obj, event);
+}
+
+
+void MainWindow::updatePlaylistLabels()
+{
+
+}
+
+void MainWindow::onPlaylistLabelClicked(QLabel *clickedLabel)
+{
+
+    // QString playlistName = clickedLabel->text();
+
+    // ui->label_Playlist_Name->setText(playlistName);
+    // // You can now insert a song into the clicked playlist or perform any other actions
+    // qDebug() << "Playlist label clicked: " << playlistName;
+
+}
+
+
+void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
+{
+    qDebug() << "Item count: " << ui->listWidget->count();
+
+    for (int i = 0; i < ui->listWidget->count(); ++i) {
+        qDebug() << "Item at index " << i << ": " << ui->listWidget->item(i)->text();
+    }
+
+    clickedItem = item;
+    QString playlistName = item->text();
+    qDebug() << "Playlist label clicked: " << playlistName;
+
+    ui->label_Playlist_Name->setText(playlistName);
+
+    updateSongList(playlistName);
+
+}
+
+void MainWindow::updateSongList(const QString &playlistName)
+{
+    // Get the playlist from the Inventory based on the label text
+    const Playlist* selectedPlaylist = nullptr;
+    const QList<Playlist>& allPlaylists = inventory->getPlaylists();
+
+    for (const Playlist& playlist : allPlaylists) {
+        if (playlist.getName() == playlistName) {
+            selectedPlaylist = &playlist;
+            break;
+        }
+    }
+
+    if (selectedPlaylist) {
+        // Clear the current listWidget_song
+        ui->listWidget_song->clear();
+
+        // Add songs from the selected playlist to listWidget_song
+        const QList<Song>& songs = selectedPlaylist->getSongs();
+        for (const Song& song : songs) {
+            QString filename2 = QFileInfo(song.getfilename()).fileName();
+            ui->listWidget_song->addItem(filename2);
+        }
+
+        qDebug() << "Updated listWidget_song for playlist: " << playlistName;
+    }
+}
+
+
+
+void MainWindow::on_listWidget_itemDoubleClicked(QListWidgetItem *item)
+{
+    QString playlistName = item->text();
+    qDebug() << "Playlist label double clicked: " << playlistName;
+
+}
+
+
+void MainWindow::on_pushdelplaylist_2_clicked()
+{
+    // Check if the clickedItem is not null
+    if (clickedItem) {
+        // Get the selected item from the QListWidget
+        QString playlistName = clickedItem->text();
+
+        // Remove the playlist from the Inventory based on the label text
+        inventory->removePlaylist(playlistName);
+
+        // Remove the item from the QListWidget
+        delete clickedItem;// Set it to null after deletion to avoid accessing it again
+
+        qDebug() << "Playlist label deleted: " << playlistName;
+
+        clickedItem = nullptr;
+
+        // Optionally update other UI or perform additional actions
+        updatePlaylistLabels();
+    }
+}
+
+
+void MainWindow::on_pushaddsong_clicked()
+{
+    // Check if a playlist item is selected in the QListWidget
+    if (clickedItem) {
+        QString playlistName = clickedItem->text();
+
+        // Get the playlist from the Inventory based on the label text
+        const Playlist* selectedPlaylist = nullptr;
+        const QList<Playlist>& allPlaylists = inventory->getPlaylists();
+
+        for (const Playlist& playlist : allPlaylists) {
+            if (playlist.getName() == playlistName) {
+                selectedPlaylist = &playlist;
+                break;
+            }
+        }
+
+        // Ensure the selected playlist is valid
+        if (selectedPlaylist) {
+            // Open a file dialog to get the selected audio file
+            QString fileName = QFileDialog::getOpenFileName(this, tr("Select Audio File"), "", tr("MP3 Files (*.mp3)"));
+
+            if (!fileName.isEmpty()) {
+                // Add the selected file to the playlist
+                Song newSong(fileName);
+                const_cast<Playlist*>(selectedPlaylist)->importSong(newSong);
+
+                // Update the QListWidget with the file names
+                ui->listWidget_song->clear();
+                const QList<Song>& songs = selectedPlaylist->getSongs();
+                for (const Song& song : songs) {
+                    QString filename2 = QFileInfo(song.getfilename()).fileName();
+                    ui->listWidget_song->addItem(filename2);
+                }
+
+                qDebug() << "Playlist size after adding a song: " << playlist.size();
+            }
+        }
+    }
+
+}
+
+
+void MainWindow::on_pushdelsong_clicked()
+{
+    // Check if a playlist item and a song item are selected in the QListWidgets
+    if (clickedItem && ui->listWidget_song->currentRow() >= 0) {
+        QString playlistName = clickedItem->text();
+        int selectedSongIndex = ui->listWidget_song->currentRow();
+
+        // Get the playlist from the Inventory based on the label text
+        const Playlist* selectedPlaylist = nullptr;
+        const QList<Playlist>& allPlaylists = inventory->getPlaylists();
+
+        for (const Playlist& playlist : allPlaylists) {
+            if (playlist.getName() == playlistName) {
+                selectedPlaylist = &playlist;
+                break;
+            }
+        }
+
+        // Ensure the selected playlist is valid
+        if (selectedPlaylist) {
+            // Remove the selected song from the playlist
+            const_cast<Playlist*>(selectedPlaylist)->removeSong(selectedSongIndex);
+
+            // Update the QListWidget with the remaining file names
+            ui->listWidget_song->clear();
+            const QList<Song>& songs = selectedPlaylist->getSongs();
+            for (const Song& song : songs) {
+                QString filename = QFileInfo(song.getfilename()).fileName();
+                ui->listWidget_song->addItem(filename);
+            }
+        }
+    }
+
+}
+
+
+void MainWindow::on_listWidget_song_itemClicked(QListWidgetItem *item)
+{
+    QString playlistName = ui->label_Playlist_Name->text();
+
+    // Get the playlist from the Inventory based on the label text
+    const Playlist* selectedPlaylist = nullptr;
+    const QList<Playlist>& allPlaylists = inventory->getPlaylists();
+
+    for (const Playlist& playlist : allPlaylists) {
+        if (playlist.getName() == playlistName) {
+            selectedPlaylist = &playlist;
+            break;
+        }
+    }
+
+    if (selectedPlaylist) {
+        int selectedSongIndex = ui->listWidget_song->currentRow();
+
+        // Ensure the selected song index is within the playlist size
+        if (selectedSongIndex >= 0 && selectedSongIndex < selectedPlaylist->getSongs().size()) {
+            const Song& selectedSong = selectedPlaylist->getSongs().at(selectedSongIndex);
+
+            QString fullFilePath = selectedSong.getfilename();
+            MPlayer->setSource(QUrl::fromLocalFile(fullFilePath));
+            audioOutput->setVolume(ui->horizontalSlider_2->value()/100.0);
+
+            QIcon pauseIcon = style()->standardIcon(QStyle::SP_MediaPause);
+            ui->push_play->setIcon(pauseIcon);
+
+            QFileInfo fileInfo(fullFilePath);
+            currentFileName = fileInfo.fileName();  // Extract only the file name
+            ui->label_File_Name->setText(currentFileName);
+            MPlayer->play();
+
+            // Start the timer for scrolling
+            scrollTimer->start();
+        }
+    }
+}
+
+
+void MainWindow::on_push_skip_clicked()
+{
+
+    qDebug() << "Playlist size: " << playlist.size();
+    // Check if the playlist is not empty
+    if (!playlist.isEmpty() && ui->listWidget_song->currentRow() >= 0) {
+        // Increment the current index
+        int selectedSongIndex = ui->listWidget_song->currentRow();
+
+        qDebug() << "Selected Song Index: " << selectedSongIndex;
+
+        currentindex = (selectedSongIndex + 1)% playlist.size();
+
+        // Get the next song in the playlist
+        const Song& nextSong = playlist[currentindex];
+
+        qDebug() << "Next Song: " << nextSong.getfilename();
+
+        // Set the source and start playing the next song
+        MPlayer->setSource(QUrl::fromLocalFile(nextSong.getfilename()));
+        audioOutput->setVolume(ui->horizontalSlider_2->value());
+        MPlayer->play();
+
+        // Update the label with the file name
+        ui->label_File_Name->setText(nextSong.getfilename());
+
+        // Optional: Update UI or perform additional actions
+    }
+
+}
+
+void MainWindow::on_push_back_clicked()
+{
+    // Check if the playlist is not empty
+    if (!playlist.isEmpty()) {
+        // Decrement the current index
+        int selectedSongIndex = ui->listWidget_song->currentRow();
+        currentindex = (selectedSongIndex - 1) % playlist.size();
+
+        // Get the previous song in the playlist
+        const Song& prevSong = playlist[currentindex];
+
+        // Set the source and start playing the previous song
+        MPlayer->setSource(QUrl::fromLocalFile(prevSong.getfilename()));
+        audioOutput->setVolume(ui->horizontalSlider_2->value());
+        MPlayer->play();
+
+        // Update the label with the file name
+        ui->label_File_Name->setText(prevSong.getfilename());
+
+        // Optional: Update UI or perform additional actions
+    }
+
+}
+
+void MainWindow::scrollFileName()
+{
+    if (!currentFileName.isEmpty()) {
+        // Shift the displayed text to create a scrolling effect
+        QString displayedText = ui->label_File_Name->text();
+        displayedText = displayedText.mid(1) + displayedText.at(0);
+        ui->label_File_Name->setText(displayedText);
+    }
+}
 

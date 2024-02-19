@@ -26,6 +26,11 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(Audify_1
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        song.h
+        song.cpp
+        playlist.h playlist.cpp
+        inventory.h inventory.cpp
+        queue.h queue.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET Audify_1 APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
